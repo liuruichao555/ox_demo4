@@ -77,7 +77,7 @@
                         <a href="javascript:;" class="fixPriceBtn" data-id="${medicalRecord.id}">定价</a>
                     </c:if>
                     <c:if test="${medicalRecord.price != null}">
-                        已定价：${medicalRecord.price}元
+                        已定价：${medicalRecord.price} 积分
                     </c:if>
                 </td>
             </tr>

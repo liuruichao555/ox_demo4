@@ -39,7 +39,7 @@
             background-color: #f9f9f9;
         }
         button{
-            width: 100px;
+            width: 200px;
             height: 35px;
             font-size: 15px;
             color: #252528;
@@ -47,6 +47,7 @@
             border-radius: 5px;
             border:#6ea1ff;
             margin-left:80%;
+            cursor: pointer;
         }
     </style>
 </head>
@@ -56,7 +57,9 @@
         <span style="font-size: 40px;">${sessionScope.userInfo.realName}</span>
         <span>积分：${requestScope.balance}</span>
     </div>
-    <!--<button type="button">共享病例</button>-->
+
+    <button type="button" id="linkBtn">已购买数据</button>
+
     <div style="width: 300px;margin: 0 auto;">
         <input type="text" id="q"><input type="button" id="qBtn" value="搜索">
     </div>
@@ -75,36 +78,14 @@
         </thead>
         <tbody id="queryData"></tbody>
     </table>
-
-    <h1>本地数据</h1>
-    <table>
-        <tr>
-            <th>id</th>
-            <th>医院名</th>
-            <th>时间</th>
-            <th>诊断信息</th>
-            <th>价格</th>
-            <th>操作</th>
-        </tr>
-        <c:forEach var="medicalRecord" items="${requestScope.list}">
-            <tr>
-                <td>${medicalRecord.id}</td>
-                <td>${medicalRecord.user.name}</td>
-                <td>${medicalRecord.diagnoseInfo}</td>
-                <td><fmt:formatDate value="${medicalRecord.createTime}" pattern="yyyy-MM-dd HH:mm" /></td>
-                <td>${medicalRecord.source}</td>
-                <td>
-                    <a target="_blank" href="/hospital/recordDetail?query=${medicalRecord.query}">查看</a>
-                </td>
-            </tr>
-        </c:forEach>
-    </table>
 </div>
 <script src="/js/jquery-2.2.3.min.js"></script>
 <script>
     $(function() {
-        var loginUserId = '${sessionScope.userInfo.id}';
-        var loginName = '${sessionScope.userInfo.cusName}';
+        $('#linkBtn').click(function() {
+            location.href = '/thirdparty/localdata';
+        });
+
         $('#qBtn').click(function() {
             var q = $('#q').val();
             if (q == '') {

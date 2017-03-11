@@ -37,10 +37,21 @@ public class ThirdpartyController extends BaseController {
         if (customer == null) {
             return "redirect:/";
         }
+        request.setAttribute("balance", thirdpartyService.getBalance(customer.getCusName()));
+        return "thirdparty/home";
+    }
+
+    @RequestMapping("/localdata")
+    public String home2(HttpServletRequest request) {
+        HttpSession session = request.getSession();
+        Customer customer = (Customer) session.getAttribute(LOGIN_USER_SESSION_KEY);
+        if (customer == null) {
+            return "redirect:/";
+        }
         List<MedicalRecord> list = thirdpartyService.getRecords(customer.getCusName());
         request.setAttribute("list", list);
         request.setAttribute("balance", thirdpartyService.getBalance(customer.getCusName()));
-        return "thirdparty/home";
+        return "thirdparty/home2";
     }
 
     @RequestMapping("/search")
