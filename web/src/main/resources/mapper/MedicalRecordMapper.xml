@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.oxchains.mapper.MedicalRecordMapper">
+    <select id="findById" parameterType="java.lang.Integer" resultType="com.oxchains.model.MedicalRecord">
+        SELECT * FROM medical_record
+        WHERE id = #{value}
+    </select>
+
+    <select id="findByHis1" resultType="com.oxchains.model.MedicalRecord">
+        SELECT * FROM medical_record
+        WHERE user_id in (2, 4)
+    </select>
+
+    <select id="findByHis2" resultType="com.oxchains.model.MedicalRecord">
+        SELECT * FROM medical_record
+        WHERE user_id in (1, 3, 5)
+    </select>
+
+    <select id="findByUserId" resultType="com.oxchains.model.MedicalRecord" parameterType="java.lang.Integer">
+        SELECT * FROM medical_record
+        WHERE user_id = #{value}
+    </select>
+
+    <select id="execSql" parameterType="java.lang.String" resultType="com.oxchains.model.MedicalRecord">
+        ${value}
+    </select>
+</mapper>

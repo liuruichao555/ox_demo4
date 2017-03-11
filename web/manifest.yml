@@ -1,0 +1,6 @@
+applications:
+   - name: ox-demo-web
+     random-route: true
+     path: target/web-1.0.war
+     memory: 2048M
+     instances: 1
