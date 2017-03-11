@@ -2,6 +2,8 @@ package com.oxchains.service;
 
 import com.oxchains.bean.dto.RespDTO;
 import com.oxchains.controller.vo.Record;
+import com.oxchains.controller.vo.SearchVO;
+import com.oxchains.controller.vo.ShareVO;
 import com.oxchains.mapper.MedicalRecordMapper;
 import com.oxchains.mapper.UserMapper;
 import com.oxchains.model.MedicalRecord;
@@ -10,7 +12,12 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.function.Consumer;
 
 /**
  * HospitalService
@@ -82,5 +89,41 @@ public class HospitalService extends BaseService {
             }
         }
         return list;
+    }
+
+    public List<ShareVO> getShareRecords(String cusName, List<MedicalRecord> localData) {
+        String jsonrpc = ChaincodeJsonrpcUtils.genQueryJsonReqStr(chaincodeID, "getSummary", cusName);
+        List<ShareVO> result = new ArrayList<>();
+        Map<Integer, String> map = new HashMap<>();
+        try {
+            localData.forEach(medicalRecord -> map.put(medicalRecord.getId(), "ok"));
+            RespDTO<String> stringRespDTO = sendChaincodeJsonrpcReq(jsonrpc);
+            String message = stringRespDTO.getMessage();
+            if (stringRespDTO.getStatus() == 0) {
+                return null;
+            }
+            // 查询sql
+            String list = message.split(ChaincodeJsonrpcUtils.ITEM_SP)[2];
+            String[] items = list.split(ChaincodeJsonrpcUtils.LIST_SP);
+            for (String item : items) {
+                String[] attr = item.split(ChaincodeJsonrpcUtils.MIN_SP);
+                String recordId = attr[0];
+                String status = attr[1];
+
+                if (!recordId.equals("0") && !map.containsKey(Integer.valueOf(recordId))) {
+                    ShareVO shareVO = new ShareVO();
+                    MedicalRecord medicalRecord = medicalRecordMapper.findById(Integer.valueOf(recordId));
+                    medicalRecord.setUser(userMapper.findById(medicalRecord.getUserId()));
+                    shareVO.setMedicalRecord(medicalRecord);
+                    shareVO.setQuery(getQuerySql(cusName, recordId));
+
+                    result.add(shareVO);
+                }
+            }
+            return result;
+        } catch (IOException e) {
+            log.error("search error!", e);
+        }
+        return null;
     }
 }

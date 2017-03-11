@@ -83,6 +83,30 @@
             </tr>
         </c:forEach>
     </table>
+
+    <h1>共享数据</h1>
+    <table>
+        <tr>
+            <th>id</th>
+            <th>病人姓名</th>
+            <th>诊断信息</th>
+            <th>时间</th>
+            <th>来源</th>
+            <th>操作</th>
+        </tr>
+        <c:forEach var="share" items="${requestScope.shareList}">
+            <tr>
+                <td>${share.medicalRecord.id}</td>
+                <td>${share.medicalRecord.user.name}</td>
+                <td>${share.medicalRecord.diagnoseInfo}</td>
+                <td><fmt:formatDate value="${share.medicalRecord.createTime}" pattern="yyyy-MM-dd HH:mm" /></td>
+                <td>${share.medicalRecord.source}</td>
+                <td>
+                    <a target="_blank" href="/hospital/recordDetail?query=${share.query}">查看</a>
+                </td>
+            </tr>
+        </c:forEach>
+    </table>
 </div>
 <script src="/js/jquery-2.2.3.min.js"></script>
 <script>

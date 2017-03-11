@@ -64,7 +64,8 @@
             <th>id</th>
             <th>描述</th>
             <th>日期</th>
-            <th>操作</th>
+            <th>共享</th>
+            <th>定价</th>
         </tr>
         <c:forEach var="medicalRecord" items="${requestScope.list}">
             <tr>
@@ -73,6 +74,8 @@
                 <td><fmt:formatDate value="${medicalRecord.createTime}" pattern="yyyy-MM-dd" /></td>
                 <td>
                     <a href="javascript:;" class="shareBtn" data-id="${medicalRecord.id}">共享</a>
+                </td>
+                <td>
                     <c:if test="${medicalRecord.price == null}">
                         <a href="javascript:;" class="fixPriceBtn" data-id="${medicalRecord.id}">定价</a>
                     </c:if>

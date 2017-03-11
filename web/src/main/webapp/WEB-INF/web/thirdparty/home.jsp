@@ -113,7 +113,7 @@
                             if (obj.havePermission == 'True') {
                                 html = html + '<td><a target="_blank" href="/hospital/recordDetail?query=' + obj.query + '">查看</a></td>';
                             } else {
-                                html = html + '<td><a class="payForRecord" href="javascript:;" data-id="' + obj.medicalRecord.id + '">购买</td>';
+                                html = html + '<td><a class="payForRecord" href="javascript:;" data-price="' + obj.medicalRecord.price + '" data-id="' + obj.medicalRecord.id + '">购买</td>';
                             }
 
                             html = html + '</tr>';
@@ -128,20 +128,23 @@
 
         $('body').delegate('.payForRecord', 'click', function() {
             var item = $(this);
-            var recordId = item.attr('data-id');
-            $.ajax({
-                type: 'POST',
-                url: '/thirdparty/payRecord',
-                data: {'recordId': recordId},
-                dataType: 'json',
-                success: function(data) {
-                    if (data.status == 1) {
-                        alert('操作成功！' + data.message);
-                    } else {
-                        alert(data.message);
+            var price = item.attr('data-price');
+            if (window.confirm("价格" + price + ", 是否购买？")) {
+                var recordId = item.attr('data-id');
+                $.ajax({
+                    type: 'POST',
+                    url: '/thirdparty/payRecord',
+                    data: {'recordId': recordId},
+                    dataType: 'json',
+                    success: function (data) {
+                        if (data.status == 1) {
+                            alert('操作成功！' + data.message);
+                        } else {
+                            alert(data.message);
+                        }
                     }
-                }
-            });
+                });
+            }
         });
 
         Date.prototype.format =function(format)

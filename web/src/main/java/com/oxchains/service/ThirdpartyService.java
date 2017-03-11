@@ -132,7 +132,7 @@ public class ThirdpartyService extends BaseService {
 
                 if (!recordId.equals("0") && !map.containsKey(Integer.valueOf(recordId))) {
                     MedicalRecord medicalRecord = medicalRecordMapper.findById(Integer.valueOf(recordId));
-                    medicalRecord.setQuery(querySql(cusName, recordId));
+                    medicalRecord.setQuery(getQuerySql(cusName, recordId));
                     result.add(medicalRecord);
                 }
                 map.put(Integer.valueOf(recordId), cusName);
@@ -140,30 +140,6 @@ public class ThirdpartyService extends BaseService {
             return result;
         } catch (Exception e) {
             log.error("get records error!", e);
-            return null;
-        }
-    }
-
-    private String querySql(String cusName, String recordId) {
-        try {
-            String query = null;
-            // 查询query
-            String jsonrpc = ChaincodeJsonrpcUtils.genQueryJsonReqStr(chaincodeID, "getRecord", cusName, recordId);
-            RespDTO<String> chainRecordResp = sendChaincodeJsonrpcReq(jsonrpc);
-            String message = chainRecordResp.getMessage();
-            String list = message.split(ChaincodeJsonrpcUtils.ITEM_SP)[3];
-            String[] recordItems = list.split(ChaincodeJsonrpcUtils.LIST_SP);
-            for (String recordItem : recordItems) {
-                String[] recordAttr = recordItem.split(ChaincodeJsonrpcUtils.MIN_SP);
-                String userId = recordAttr[0];
-                String query2 = recordAttr[2];
-                if (userId.equals(cusName)) {
-                    query = query2;
-                }
-            }
-            return query;
-        } catch (Exception e) {
-            log.error("queySql error!", e);
             return null;
         }
     }

@@ -59,13 +59,14 @@
 <h1>病历</h1>
 <div class="bingli">
     <div class="wrap top">
+        <c:set value="无查看权限" var="permissionMsg"></c:set>
         <label>
             姓名：
-            <span>${detail.user.name}</span>
+            <span><c:out value="${detail.user.name}" default="${permissionMsg}"/></span>
         </label>
         <label>
             性别：
-            <span>${detail.user.gender}</span>
+            <span><c:out value="${detail.user.gender}" default="${permissionMsg}"/> </span>
         </label>
         <%--<label>
             出生日期：
@@ -77,7 +78,7 @@
         </label>
         <label>
             电话：
-            <span>${detail.user.tel}</span>
+            <span><c:out value="${detail.user.tel}" default="${permissionMsg}"/> </span>
         </label>
     </div>
     <div class="wrap top">
@@ -104,25 +105,25 @@
         </label>--%>
         <label>
             诊断信息：
-            <p>${detail.diagnoseInfo}</p>
+            <p><c:out value="${detail.diagnoseInfo}" default="${permissionMsg}"/> </p>
         </label>
     </div>
     <div class="wrap msg">
         <label>
             门诊信息：
-            <p>${detail.outpatientInfo}</p>
+            <p><c:out value="${detail.outpatientInfo}" default="${permissionMsg}"/> </p>
         </label>
     </div>
     <div class="wrap msg">
         <label>
             处方信息：
-            <p>${detail.medicineInfo}</p>
+            <p><c:out value="${detail.medicineInfo}" default="${permissionMsg}"/> </p>
         </label>
     </div>
     <div class="wrap msg">
         <label>
             住院信息：
-            <p>${detail.hospitalizationInfo}</p>
+            <p><c:out value="${detail.hospitalizationInfo}" default="${permissionMsg}"/> </p>
         </label>
     </div>
     <div class="wrap photo">
@@ -130,11 +131,11 @@
             拍片
         </label>
         <ul>
-            <c:if test="${detail.picInfo != null && detail.picInfo != ''}">
+            <c:if test="${detail.picInfo != null}">
                 <li><img src="/images/${detail.picInfo}" width="220"></li>
             </c:if>
-            <c:if test="${detail.picInfo == null || detail.picInfo == ''}">
-                <li>无照片信息</li>
+            <c:if test="${detail.picInfo == null}">
+                无查看权限
             </c:if>
         </ul>
         <div class="clearFix"></div>
@@ -142,7 +143,7 @@
     <div class="wrap msg">
         <label>
             医生描述：
-            <p>${detail.doctorMessage}</p>
+            <p><c:out value="${detail.doctorMessage}" default="${permissionMsg}"/> </p>
         </label>
     </div>
 </div>

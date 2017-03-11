@@ -64,6 +64,8 @@ public class HospitalController extends BaseController {
         List<MedicalRecord> list = hospitalService.getRecords(customer.getCusName());
         request.setAttribute("list", list);
         request.setAttribute("balance", customerService.getBalance(customer.getCusName()));
+        // 已获得的共享数据
+        request.setAttribute("shareList", hospitalService.getShareRecords(customer.getCusName(), list));
         return "hospital/home2";
     }
 

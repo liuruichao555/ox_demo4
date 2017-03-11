@@ -73,10 +73,10 @@
         <c:forEach var="medicalRecord" items="${requestScope.list}">
             <tr>
                 <td>${medicalRecord.id}</td>
-                <td>${medicalRecord.user.name}</td>
-                <td>${medicalRecord.diagnoseInfo}</td>
+                <td>${medicalRecord.hospitalName}</td>
                 <td><fmt:formatDate value="${medicalRecord.createTime}" pattern="yyyy-MM-dd HH:mm" /></td>
-                <td>${medicalRecord.source}</td>
+                <td>${medicalRecord.diagnoseInfo}</td>
+                <td>${medicalRecord.price}</td>
                 <td>
                     <a target="_blank" href="/hospital/recordDetail?query=${medicalRecord.query}">查看</a>
                 </td>
