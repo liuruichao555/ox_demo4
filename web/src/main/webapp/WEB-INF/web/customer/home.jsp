@@ -68,7 +68,15 @@
                 <td>${medicalRecord.id}</td>
                 <td>${medicalRecord.diagnoseInfo}</td>
                 <td><fmt:formatDate value="${medicalRecord.createTime}" pattern="yyyy-MM-dd" /></td>
-                <td><a href="javascript:;" class="shareBtn" data-id="${medicalRecord.id}">共享</a></td>
+                <td>
+                    <a href="javascript:;" class="shareBtn" data-id="${medicalRecord.id}">共享</a>
+                    <c:if test="${medicalRecord.price == null}">
+                        <a href="javascript:;" class="fixPriceBtn" data-id="${medicalRecord.id}">定价</a>
+                    </c:if>
+                    <c:if test="${medicalRecord.price != null}">
+                        已定价：${medicalRecord.price}元
+                    </c:if>
+                </td>
             </tr>
         </c:forEach>
     </table>
@@ -117,6 +125,15 @@
                 location.href = '/customer/share?id=' + id;
             }
         });
+
+        $('.fixPriceBtn').click(function() {
+            var item = $(this);
+            var id = item.attr('data-id');
+            if (id) {
+                location.href = '/customer/setPrice?recordId=' + id;
+            }
+        });
+
         $('.opAc').click(function() {
             var item = $(this);
             var id = item.attr('data-id');

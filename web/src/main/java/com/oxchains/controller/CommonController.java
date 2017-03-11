@@ -55,6 +55,13 @@ public class CommonController extends BaseController {
         return customerService.getSummary(name, customer.getCusName());
     }
 
+    @RequestMapping("/predata2")
+    @ResponseBody
+    public String predata2() {
+        customerService.registerHis("yjjg");
+        return "success";
+    }
+
     @RequestMapping("/predata")
     @ResponseBody
     public String predata() {
@@ -66,6 +73,7 @@ public class CommonController extends BaseController {
         customerService.registerHis("bjdxgjyy");
         customerService.registerHis("fddxfshsyy");
         customerService.registerHis("bjdxszyy");
+        customerService.registerHis("yjjg");
 
         List<MedicalRecord> list1 = medicalRecordMapper.findByHis1();
         List<MedicalRecord> list2 = medicalRecordMapper.findByHis2();

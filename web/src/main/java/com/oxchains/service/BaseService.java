@@ -37,8 +37,12 @@ public abstract class BaseService {
 
     protected String genQuerySql(String dataItem, String id) {
         StringBuilder sbu = new StringBuilder();
-        sbu.append("SELECT user_id, ").append(dataItem);
-        sbu.append(" FROM medical_record where id=" + id);
+        sbu.append("SELECT ");
+        if (!dataItem.equals("*")) {
+            sbu.append("user_id, ");
+        }
+        sbu.append(dataItem)
+                .append(" FROM medical_record where id=").append(id);
         return sbu.toString();
     }
 }

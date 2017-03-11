@@ -4,6 +4,7 @@ import com.oxchains.bean.dto.RespDTO;
 import com.oxchains.common.BaseController;
 import com.oxchains.controller.vo.CusShareInfoVO;
 import com.oxchains.controller.vo.UpdatePermissionVO;
+import com.oxchains.controller.vo.UpdatePriceVO;
 import com.oxchains.mapper.MedicalRecordMapper;
 import com.oxchains.mapper.MessageMapper;
 import com.oxchains.model.Customer;
@@ -13,6 +14,7 @@ import com.oxchains.service.CustomerService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -120,5 +122,35 @@ public class CustomerController extends BaseController {
     public RespDTO<String> updateMsgStatus(@RequestParam Integer id) {
         messageMapper.updateStatus(id);
         return RespDTO.success();
+    }
+
+    @RequestMapping(value = "/setPrice", method = RequestMethod.GET)
+    public String toSetprice(@RequestParam Integer recordId, HttpServletRequest request) {
+        request.setAttribute("recordId", recordId);
+        return "customer/setPrice";
+    }
+
+    @RequestMapping(value = "/cusSetPrice", method = RequestMethod.POST)
+    @ResponseBody
+    public RespDTO<String> cusSetPrice(@RequestParam Integer id,
+                                       @RequestParam String dataItem,
+                                       @RequestParam String price,
+                                       HttpServletRequest request) {
+        try {
+            HttpSession session = request.getSession();
+            Customer customer = (Customer) session.getAttribute(LOGIN_USER_SESSION_KEY);
+            if (customer == null) {
+                return RespDTO.fail("请登录！");
+            }
+            UpdatePriceVO updatePriceVO = new UpdatePriceVO();
+            updatePriceVO.setRecordId(id + "");
+            updatePriceVO.setDataItem(dataItem);
+            updatePriceVO.setPrice(price);
+            updatePriceVO.setUserId(customer.getId() + "");
+            return customerService.cusSetPrice(updatePriceVO);
+        } catch (Exception e) {
+            log.error("customer set price error!", e);
+            return RespDTO.fail("系统繁忙，请稍后再试！");
+        }
     }
 }

@@ -1,6 +1,7 @@
 package com.oxchains.mapper;
 
 import com.oxchains.model.MedicalRecord;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -20,4 +21,8 @@ public interface MedicalRecordMapper {
     List<MedicalRecord> findByHis2();
 
     MedicalRecord execSql(String sql);
+
+    void updatePrice(@Param("medicalRecord") MedicalRecord medicalRecord);
+
+    List<MedicalRecord> search(String name);
 }
