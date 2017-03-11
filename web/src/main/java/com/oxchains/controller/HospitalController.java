@@ -56,10 +56,14 @@ public class HospitalController extends BaseController {
     }
 
     @RequestMapping("/recordDetail")
-    public String recordDetail(@RequestParam String query, HttpServletRequest request) {
+    public String recordDetail(@RequestParam String recordId, HttpServletRequest request) {
+
+        String query = "select * from medical_record where id = " + recordId;
+
         MedicalRecord medicalRecord = medicalRecordMapper.execSql(query);
         medicalRecord.setUser(userMapper.findById(medicalRecord.getUserId()));
         request.setAttribute("detail", medicalRecord);
+
         return "hospital/detail";
     }
 
