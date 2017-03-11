@@ -93,8 +93,9 @@
                 return;
             }
             $.ajax({
-                url: '/thirdparty/search?name=' + q,
-                data: null,
+                type: 'POST',
+                url: '/thirdparty/search',
+                data: {'name': q},
                 dataType: 'json',
                 success: function(data) {
                     if (data.status == 1) {

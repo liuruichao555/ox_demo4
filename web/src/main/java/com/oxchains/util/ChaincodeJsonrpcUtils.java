@@ -15,15 +15,15 @@ public class ChaincodeJsonrpcUtils {
 
     private static final String deployJsonrpcTmpl = "{\"jsonrpc\": \"2.0\",\"method\": \"deploy\"," +
             "\"params\": {\"type\": 1,\"chaincodeID\":{\"path\":\"#{path}#\"}," +
-            "\"ctorMsg\": {\"args\":[#{args}#]},\"secureContext\": \"jim\"},\"id\": 1}";
+            "\"ctorMsg\": {\"args\":[#{args}#]},\"secureContext\": \"user_type1_0\"},\"id\": 1}";
 
     private static final String queryJsonrpcTmpl = "{\"jsonrpc\": \"2.0\",\"method\": \"query\"," +
             "\"params\": {\"type\": 1,\"chaincodeID\":{\"name\":\"#{chaincodeID}#\"}," +
-            "\"ctorMsg\": {\"args\":[#{args}#]},\"secureContext\": \"jim\"},\"id\": 5}";
+            "\"ctorMsg\": {\"args\":[#{args}#]},\"secureContext\": \"user_type1_0\"},\"id\": 5}";
 
     private static final String invokeJsonrpcTmpl = "{\"jsonrpc\": \"2.0\",\"method\": \"invoke\"," +
             "\"params\": {\"type\": 1,\"chaincodeID\":{\"name\":\"#{chaincodeID}#\"}," +
-            "\"ctorMsg\": {\"args\":[#{args}#]},\"secureContext\": \"jim\"},\"id\": 3}";
+            "\"ctorMsg\": {\"args\":[#{args}#]},\"secureContext\": \"user_type1_0\"},\"id\": 3}";
 
     public static String genDeployJsonReqStr(String path, String... args) {
         return deployJsonrpcTmpl.replace("#{path}#", path).replace("#{args}#", genArgsStr(args));

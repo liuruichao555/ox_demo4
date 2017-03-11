@@ -85,7 +85,7 @@ public class ThirdpartyService extends BaseService {
             }
             return RespDTO.success(searchVOS);
         } catch (IOException e) {
-            log.error("");
+            log.error("search error!", e);
             return RespDTO.fail("系统繁忙，请稍后再试！");
         }
     }
