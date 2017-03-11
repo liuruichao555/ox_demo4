@@ -54,8 +54,8 @@
 </head>
 <body>
 <div style="width: 500px; height: 200px;text-align: center;margin: 0 auto;">
-    <span style="font-size: 40px;">${sessionScope.userInfo.realName}</span>
-    <span>积分：${requestScope.balance}</span>
+    <div style="font-size: 40px;">${sessionScope.userInfo.realName}</div>
+    <div>积分：${requestScope.balance}</div>
 </div>
 <div>
     <h2>病历列表</h2>

@@ -15,6 +15,11 @@
             height: 100px;
             line-height: 100px;
         }
+        h3{
+            text-align: center;
+            height: 100px;
+            line-height: 100px;
+        }
         table{
             margin:0 auto;
             width: 700px;
@@ -46,25 +51,29 @@
             background: #6ea1ff;
             border-radius: 5px;
             border:#6ea1ff;
-            margin-left:80%;
             cursor: pointer;
+            margin: 0 auto;
         }
     </style>
 </head>
 <body>
 <div id="hospital">
-    <div style="width: 500px; height: 200px;text-align: center;margin: 0 auto;">
-        <span style="font-size: 40px;">${sessionScope.userInfo.realName}</span>
-        <span>积分：${requestScope.balance}</span>
+    <div style="width: 500px; text-align: center;margin: 0 auto;">
+        <div style="font-size: 40px;margin: 10px;">${sessionScope.userInfo.realName}</div>
+        <div style="margin: 10px;">积分：${requestScope.balance}</div>
+        <button type="button" id="linkBtn">已购买数据</button>
     </div>
 
-    <button type="button" id="linkBtn">已购买数据</button>
 
-    <div style="width: 300px;margin: 0 auto;">
-        <input type="text" id="q"><input type="button" id="qBtn" value="搜索">
-    </div>
 
     <h1>查询疾病数据</h1>
+
+    <div style="width: 300px;margin: 0 auto;">
+        查询疾病名称：<input type="text" id="q"><input type="button" id="qBtn" value="搜索">
+    </div>
+
+    <h3>查询结果</h3>
+
     <table>
         <thead>
             <tr>

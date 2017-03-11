@@ -46,24 +46,22 @@
             background: #6ea1ff;
             border-radius: 5px;
             border:#6ea1ff;
-            margin-left:80%;
             cursor: pointer;
         }
     </style>
 </head>
 <body>
 <div id="hospital">
-    <div style="width: 500px; height: 200px;text-align: center;margin: 0 auto;">
-        <span style="font-size: 40px;">${sessionScope.userInfo.realName}</span>
-        <span>积分：${requestScope.balance}</span>
+    <div style="width: 500px; text-align: center;margin: 0 auto;">
+        <div style="font-size: 40px; margin: 10px;">${sessionScope.userInfo.realName}</div>
+        <div style="margin: 10px;">积分：${requestScope.balance}</div>
+        <button type="button" id="linkBtn">本院健康档案信息</button>
     </div>
-
-    <button type="button" id="linkBtn">本院健康档案信息</button>
 
     <h1>查询患者健康档案信息录</h1>
 
-    <div style="width: 300px;margin: 0 auto;">
-        <input type="text" id="q"><input type="button" id="qBtn" value="搜索">
+    <div style="width: 500px;margin: 0 auto; text-align: center;">
+        请输入患者姓名：<input type="text" id="q"><input type="button" id="qBtn" value="搜索">
         <p id="qLabel" style="color: red;font-size: 20px;"></p>
     </div>
 
