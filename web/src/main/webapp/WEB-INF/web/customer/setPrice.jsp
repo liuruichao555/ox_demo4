@@ -63,7 +63,7 @@
 <h1>${sessionScope.userInfo.cusName}</h1>
 <div>
     <h2>定价页面</h2>
-    <div style="width: 300px;margin: 0 auto;">
+    <div style="width: 500px;margin: 0 auto;">
         <div style="margin: 0 auto;">价格设置（对方付费后才能获取您的信息）</div>
         价格为&nbsp;&nbsp;<input type="text" id="price"> 积分
     </div>
