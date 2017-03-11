@@ -39,6 +39,8 @@ public class MedicalRecord extends BaseEntity {
 
     private String hospitalName; // 医院名称
 
+    private Float price; // 价格, 供第三方机构购买
+
     private Customer customer;
 
     private User user;

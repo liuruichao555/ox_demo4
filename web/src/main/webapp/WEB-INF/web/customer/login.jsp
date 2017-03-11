@@ -113,8 +113,10 @@
                     if (data.status == 1) {
                         if (data.data.cusType == 'HOSPITAL') {
                             location.href = '/hospital';
-                        } else {
+                        } else if ('PERSONAL' == data.data.cusType) {
                             location.href = '/customer';
+                        } else {
+                            location.href = '/thirdparty';
                         }
                     } else {
                         alert(data.message);

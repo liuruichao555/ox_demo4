@@ -4,6 +4,7 @@ import com.oxchains.bean.dto.RespDTO;
 import com.oxchains.controller.vo.CusShareInfoVO;
 import com.oxchains.controller.vo.Summary;
 import com.oxchains.controller.vo.UpdatePermissionVO;
+import com.oxchains.controller.vo.UpdatePriceVO;
 import com.oxchains.mapper.CustomerMapper;
 import com.oxchains.mapper.MedicalRecordMapper;
 import com.oxchains.mapper.MessageMapper;
@@ -52,7 +53,7 @@ public class CustomerService extends BaseService {
 
     public RespDTO<String> registerHis(String name) {
         try {
-            String jsonrpc = ChaincodeJsonrpcUtils.genInvokeJsonReqStr(chaincodeID, "register", name);
+            String jsonrpc = ChaincodeJsonrpcUtils.genInvokeJsonReqStr(chaincodeID, "register", name, "1000");
             return sendChaincodeJsonrpcReq(jsonrpc);
         } catch (IOException e) {
             log.error("register fabric error! name: " + name, e);
@@ -205,5 +206,27 @@ public class CustomerService extends BaseService {
         }
 
         return list;
+    }
+
+    /**
+     * 电子病历定价
+     * @param updatePriceVO
+     * @return
+     */
+    public RespDTO<String> cusSetPrice(UpdatePriceVO updatePriceVO) {
+        try {
+            MedicalRecord medicalRecord = medicalRecordMapper.findById(Integer.valueOf(updatePriceVO.getRecordId()));
+            medicalRecord.setPrice(Float.valueOf(updatePriceVO.getPrice()));
+            medicalRecordMapper.updatePrice(medicalRecord);
+            // userId, recordId, price, condition[dataItem, query, hash, deadline]
+            String jsonrpc = ChaincodeJsonrpcUtils.genInvokeJsonReqStr(chaincodeID, "setCondition",
+                    updatePriceVO.getUserId(), updatePriceVO.getRecordId(), updatePriceVO.getPrice(),
+                    updatePriceVO.getDataItem(), genQuerySql(updatePriceVO.getDataItem(), updatePriceVO.getRecordId()),
+                    updatePriceVO.hashCode() + "", "2020/10/10");
+            return sendChaincodeJsonrpcReq(jsonrpc);
+        } catch (Exception e) {
+            log.error("customer set Price error! updatePriceVO: " + updatePriceVO, e);
+            return RespDTO.fail();
+        }
     }
 }
