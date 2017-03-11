@@ -2,12 +2,8 @@ package com.oxchains.controller.vo;
 
 import com.oxchains.bean.dto.RespDTO;
 import com.oxchains.common.BaseController;
-import com.oxchains.mapper.MedicalRecordMapper;
 import com.oxchains.model.Customer;
 import com.oxchains.model.MedicalRecord;
-import com.oxchains.service.BaseService;
-import com.oxchains.service.CustomerService;
-import com.oxchains.service.HospitalService;
 import com.oxchains.service.ThirdpartyService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
@@ -30,14 +26,20 @@ import java.util.List;
 @RequestMapping("/thirdparty")
 @Slf4j
 public class ThirdpartyController extends BaseController {
-    @Resource
-    private MedicalRecordMapper medicalRecordMapper;
 
     @Resource
     private ThirdpartyService thirdpartyService;
 
     @RequestMapping("")
-    public String home() {
+    public String home(HttpServletRequest request) {
+        HttpSession session = request.getSession();
+        Customer customer = (Customer) session.getAttribute(LOGIN_USER_SESSION_KEY);
+        if (customer == null) {
+            return "redirect:/";
+        }
+        List<MedicalRecord> list = thirdpartyService.getRecords(customer.getCusName());
+        request.setAttribute("list", list);
+        request.setAttribute("balance", thirdpartyService.getBalance(customer.getCusName()));
         return "thirdparty/home";
     }
 
@@ -54,6 +56,22 @@ public class ThirdpartyController extends BaseController {
         } catch (Exception e) {
             log.error("thirdparty serach error!", e);
             return RespDTO.fail("系统繁忙，请稍后再试!");
+        }
+    }
+
+    @RequestMapping("/payRecord")
+    @ResponseBody
+    public RespDTO<String> payRecord(@RequestParam Integer recordId, HttpServletRequest request) {
+        try {
+            HttpSession session = request.getSession();
+            Customer customer = (Customer) session.getAttribute(LOGIN_USER_SESSION_KEY);
+            if (customer == null) {
+                return RespDTO.fail("请登录");
+            }
+            return thirdpartyService.payRecord(recordId, customer.getCusName());
+        } catch (Exception e) {
+            log.error("payRecord error!", e);
+            return RespDTO.fail("系统繁忙，请稍后再试！");
         }
     }
 }

@@ -3,12 +3,14 @@ package com.oxchains.service;
 import com.google.common.base.Charsets;
 import com.oxchains.bean.dto.RespDTO;
 import com.oxchains.handler.FluentResponseHandler;
+import com.oxchains.model.MedicalRecord;
 import com.oxchains.service.dto.ChaincodeResultDTO;
 import com.oxchains.util.ChaincodeJsonrpcUtils;
 import org.apache.http.client.fluent.Request;
 import org.springframework.beans.factory.annotation.Value;
 
 import java.io.IOException;
+import java.util.List;
 
 /**
  * BaseService
@@ -44,5 +46,20 @@ public abstract class BaseService {
         sbu.append(dataItem)
                 .append(" FROM medical_record where id=").append(id);
         return sbu.toString();
+    }
+
+    public String getBalance(String cusName) {
+        try {
+            String jsonrpc = ChaincodeJsonrpcUtils.genQueryJsonReqStr(chaincodeID, "getSummary", cusName);
+            RespDTO<String> stringRespDTO = sendChaincodeJsonrpcReq(jsonrpc);
+            String message = stringRespDTO.getMessage();
+            if (stringRespDTO.getStatus() == 1) {
+                // 查询sql
+                return message.split(ChaincodeJsonrpcUtils.ITEM_SP)[3];
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 }

@@ -46,4 +46,6 @@ public class MedicalRecord extends BaseEntity {
     private User user;
 
     private String source;
+
+    private String query;
 }

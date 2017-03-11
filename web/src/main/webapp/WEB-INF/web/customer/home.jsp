@@ -53,7 +53,10 @@
     </style>
 </head>
 <body>
-<h1>${sessionScope.userInfo.realName}</h1>
+<div style="width: 500px; height: 200px;text-align: center;margin: 0 auto;">
+    <span style="font-size: 40px;">${sessionScope.userInfo.realName}</span>
+    <span>积分：${requestScope.balance}</span>
+</div>
 <div>
     <h2>病历列表</h2>
     <table>

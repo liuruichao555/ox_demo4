@@ -32,6 +32,5 @@ public class MongoDataFetcher {
         list[0] = "outpatientInfo";
         list[1] = "medicineInfo";
         String re = new MongoDataFetcher().getMedicalDataByKeys(1, list);
-        System.out.println(re);
     }
 }

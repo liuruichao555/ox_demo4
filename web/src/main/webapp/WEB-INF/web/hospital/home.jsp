@@ -52,7 +52,10 @@
 </head>
 <body>
 <div id="hospital">
-    <h1>${sessionScope.userInfo.realName}</h1>
+    <div style="width: 500px; height: 200px;text-align: center;margin: 0 auto;">
+        <span style="font-size: 40px;">${sessionScope.userInfo.realName}</span>
+        <span>积分：${requestScope.balance}</span>
+    </div>
     <!--<button type="button">共享病例</button>-->
     <div style="width: 300px;margin: 0 auto;">
         <input type="text" id="q"><input type="button" id="qBtn" value="搜索">

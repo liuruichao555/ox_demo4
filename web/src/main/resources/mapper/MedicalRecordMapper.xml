@@ -24,6 +24,7 @@
     <select id="search" resultType="com.oxchains.model.MedicalRecord" parameterType="java.lang.String">
         SELECT * FROM medical_record
         WHERE diagnose_info like CONCAT('%', #{value}, '%')
+              AND price is NOT NULL
     </select>
 
     <select id="execSql" parameterType="java.lang.String" resultType="com.oxchains.model.MedicalRecord">
