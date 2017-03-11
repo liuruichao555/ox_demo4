@@ -96,11 +96,16 @@
             <p>${detail.user.medicalHistory}</p>
         </label>
     </div>
-    <div class="wrap top">
+
+    <div class="wrap msg">
         <%--<label>
             治疗时间：
             <span>xxxx-xx-xx</span>
         </label>--%>
+        <label>
+            诊断信息：
+            <p>${detail.diagnoseInfo}</p>
+        </label>
     </div>
     <div class="wrap msg">
         <label>
@@ -125,8 +130,11 @@
             拍片
         </label>
         <ul>
-            <c:if test="${detail.picInfo != null}">
+            <c:if test="${detail.picInfo != null && detail.picInfo != ''}">
                 <li><img src="/images/${detail.picInfo}" width="220"></li>
+            </c:if>
+            <c:if test="${detail.picInfo == null || detail.picInfo == ''}">
+                <li>无照片信息</li>
             </c:if>
         </ul>
         <div class="clearFix"></div>
