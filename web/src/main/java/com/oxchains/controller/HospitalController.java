@@ -2,7 +2,6 @@ package com.oxchains.controller;
 
 import com.oxchains.bean.dto.RespDTO;
 import com.oxchains.common.BaseController;
-import com.oxchains.controller.vo.Record;
 import com.oxchains.mapper.MedicalRecordMapper;
 import com.oxchains.mapper.UserMapper;
 import com.oxchains.model.Customer;
@@ -52,6 +51,7 @@ public class HospitalController extends BaseController {
 
         List<MedicalRecord> list = hospitalService.getRecords(customer.getCusName());
         request.setAttribute("list", list);
+        request.setAttribute("balance", customerService.getBalance(customer.getCusName()));
         return "hospital/home";
     }
 

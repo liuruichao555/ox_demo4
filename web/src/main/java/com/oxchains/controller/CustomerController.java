@@ -60,6 +60,7 @@ public class CustomerController extends BaseController {
         request.setAttribute("list", list);
         request.setAttribute("messages", messages);
         request.setAttribute("shareInfoList", customerService.getShareInfoList(customer));
+        request.setAttribute("balance", customerService.getBalance(customer.getCusName()));
         return "customer/home";
     }
 
@@ -146,7 +147,7 @@ public class CustomerController extends BaseController {
             updatePriceVO.setRecordId(id + "");
             updatePriceVO.setDataItem(dataItem);
             updatePriceVO.setPrice(price);
-            updatePriceVO.setUserId(customer.getId() + "");
+            updatePriceVO.setUserId(customer.getCusName());
             return customerService.cusSetPrice(updatePriceVO);
         } catch (Exception e) {
             log.error("customer set price error!", e);

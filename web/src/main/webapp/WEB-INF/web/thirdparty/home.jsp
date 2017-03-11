@@ -52,7 +52,10 @@
 </head>
 <body>
 <div id="hospital">
-    <h1>${sessionScope.userInfo.realName}</h1>
+    <div style="width: 500px; height: 200px;text-align: center;margin: 0 auto;">
+        <span style="font-size: 40px;">${sessionScope.userInfo.realName}</span>
+        <span>积分：${requestScope.balance}</span>
+    </div>
     <!--<button type="button">共享病例</button>-->
     <div style="width: 300px;margin: 0 auto;">
         <input type="text" id="q"><input type="button" id="qBtn" value="搜索">
@@ -77,10 +80,10 @@
     <table>
         <tr>
             <th>id</th>
-            <th>病人姓名</th>
-            <th>诊断信息</th>
+            <th>医院名</th>
             <th>时间</th>
-            <th>来源</th>
+            <th>诊断信息</th>
+            <th>价格</th>
             <th>操作</th>
         </tr>
         <c:forEach var="medicalRecord" items="${requestScope.list}">
@@ -91,8 +94,7 @@
                 <td><fmt:formatDate value="${medicalRecord.createTime}" pattern="yyyy-MM-dd HH:mm" /></td>
                 <td>${medicalRecord.source}</td>
                 <td>
-                    <a href="/hospital/recordDetail?recordId=${medicalRecord.id}">查看</a>
-                    <!--<a href="javascript:;" class="shareBtn" data-id="${medicalRecord.id}">共享</a>-->
+                    <a target="_blank" href="/hospital/recordDetail?query=${medicalRecord.query}">查看</a>
                 </td>
             </tr>
         </c:forEach>
@@ -115,16 +117,24 @@
                 dataType: 'json',
                 success: function(data) {
                     if (data.status == 1) {
-                    /*<th>id</th>
-                        <th>医院名</th>
-                        <th>时间</th>
-                        <th>诊断信息</th>
-                        <th>价格</th>
-                        <th>操作</th>*/
                         var list = data.data;
                         var html = '';
                         for (var i = 0; i < list.length; i++) {
-                            html = html + '<tr></tr>'
+                            var obj = list[i];
+                            html = html + '<tr>' +
+                                '<td>' + obj.medicalRecord.id + '</td>' +
+                                '<td>' + obj.medicalRecord.hospitalName + '</td>' +
+                                '<td>' + new Date(obj.medicalRecord.createTime).format('yyyy-MM-dd') + '</td>' +
+                                '<td>' + obj.medicalRecord.diagnoseInfo + '</td>' +
+                                '<td>' + obj.medicalRecord.price + '</td>';
+
+                            if (obj.havePermission == 'True') {
+                                html = html + '<td><a target="_blank" href="/hospital/recordDetail?query=' + obj.query + '">查看</a></td>';
+                            } else {
+                                html = html + '<td><a class="payForRecord" href="javascript:;" data-id="' + obj.medicalRecord.id + '">购买</td>';
+                            }
+
+                            html = html + '</tr>';
                         }
                         $('#queryData').html(html);
                     } else {
@@ -134,17 +144,20 @@
             });
         });
 
-        $('body').delegate('.consent', 'click', function() {
+        $('body').delegate('.payForRecord', 'click', function() {
             var item = $(this);
             var recordId = item.attr('data-id');
-            var ownerName = $('#q').val();
             $.ajax({
                 type: 'POST',
-                url: '/hospital/consent',
-                data: {'recordId': recordId, 'ownerName': ownerName},
+                url: '/thirdparty/payRecord',
+                data: {'recordId': recordId},
                 dataType: 'json',
                 success: function(data) {
-                    alert('申请请求已发送')
+                    if (data.status == 1) {
+                        alert('操作成功！' + data.message);
+                    } else {
+                        alert(data.message);
+                    }
                 }
             });
         });
