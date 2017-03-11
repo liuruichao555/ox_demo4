@@ -117,7 +117,7 @@
     <div class="wrap msg">
         <label>
             住院信息：
-            <p>${detail.medicineInfo}</p>
+            <p>${detail.hospitalizationInfo}</p>
         </label>
     </div>
     <div class="wrap photo">
