@@ -69,7 +69,7 @@
     <h1>查询疾病数据</h1>
 
     <div style="width: 300px;margin: 0 auto;">
-        查询疾病名称：<input type="text" id="q"><input type="button" id="qBtn" value="搜索">
+        查询疾病名称：<input style="height: 28px;" type="text" id="q"><input type="button" id="qBtn" value="搜索">
     </div>
 
     <h3>查询结果</h3>

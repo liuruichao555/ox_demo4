@@ -53,8 +53,8 @@
     </style>
 </head>
 <body>
-<div style="width: 500px; height: 200px;text-align: center;margin: 0 auto;">
-    <div style="font-size: 40px;">${sessionScope.userInfo.realName}</div>
+<div style="width: 500px; text-align: center;margin: 0 auto;">
+    <div style="font-size: 40px;margin: 10px;">${sessionScope.userInfo.realName}</div>
     <div>积分：${requestScope.balance}</div>
 </div>
 <div>
