@@ -8,6 +8,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>${sessionScope.userInfo.realName}</title>
+
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
     <style>
         h1{
@@ -58,7 +59,8 @@
     <span>积分：${requestScope.balance}</span>
 </div>
 <div>
-    <h2>病历列表</h2>
+    <h2><a href="javascript:void(0);" onclick="window.open('https://ox-invoice-web-unblocked-omega.mybluemix.net/invoice/list')" target="_blank"> 报销管理</a></h2>
+    <h2>病历列表 </h2>
     <table>
         <tr>
             <th>id</th>
