@@ -6,6 +6,7 @@ import com.oxchains.handler.FluentResponseHandler;
 import com.oxchains.model.MedicalRecord;
 import com.oxchains.service.dto.ChaincodeResultDTO;
 import com.oxchains.util.ChaincodeJsonrpcUtils;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.http.client.fluent.Request;
 import org.springframework.beans.factory.annotation.Value;
 
@@ -18,6 +19,7 @@ import java.util.List;
  * @author liuruichao
  * Created on 2017/3/11 11:41
  */
+@Slf4j
 public abstract class BaseService {
     @Value("${chaincodeID}")
     protected String chaincodeID;
@@ -58,7 +60,31 @@ public abstract class BaseService {
                 return message.split(ChaincodeJsonrpcUtils.ITEM_SP)[3];
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            log.error("getBalance error!", e);
+        }
+        return null;
+    }
+
+    protected String getQuerySql(String cusName, String recordId) {
+        try {
+            String query = null;
+            // 查询query
+            String jsonrpc = ChaincodeJsonrpcUtils.genQueryJsonReqStr(chaincodeID, "getRecord", cusName, recordId);
+            RespDTO<String> chainRecordResp = sendChaincodeJsonrpcReq(jsonrpc);
+            String message = chainRecordResp.getMessage();
+            String list = message.split(ChaincodeJsonrpcUtils.ITEM_SP)[3];
+            String[] recordItems = list.split(ChaincodeJsonrpcUtils.LIST_SP);
+            for (String recordItem : recordItems) {
+                String[] recordAttr = recordItem.split(ChaincodeJsonrpcUtils.MIN_SP);
+                String userId = recordAttr[0];
+                String query2 = recordAttr[2];
+                if (userId.equals(cusName)) {
+                    query = query2;
+                }
+            }
+            return query;
+        } catch (Exception e) {
+            log.error("queySql error!", e);
         }
         return null;
     }

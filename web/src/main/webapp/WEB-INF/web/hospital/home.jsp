@@ -39,29 +39,32 @@
             background-color: #f9f9f9;
         }
         button{
-            width: 100px;
+            width: 200px;
             height: 35px;
             font-size: 15px;
             color: #252528;
             background: #6ea1ff;
             border-radius: 5px;
             border:#6ea1ff;
-            margin-left:80%;
+            cursor: pointer;
         }
     </style>
 </head>
 <body>
 <div id="hospital">
-    <div style="width: 500px; height: 200px;text-align: center;margin: 0 auto;">
-        <span style="font-size: 40px;">${sessionScope.userInfo.realName}</span>
-        <span>积分：${requestScope.balance}</span>
-    </div>
-    <!--<button type="button">共享病例</button>-->
-    <div style="width: 300px;margin: 0 auto;">
-        <input type="text" id="q"><input type="button" id="qBtn" value="搜索">
+    <div style="width: 500px; text-align: center;margin: 0 auto;">
+        <div style="font-size: 40px; margin: 10px;">${sessionScope.userInfo.realName}</div>
+        <div style="margin: 10px;">积分：${requestScope.balance}</div>
+        <button type="button" id="linkBtn">本院健康档案信息</button>
     </div>
 
-    <h1>历史记录</h1>
+    <h1>查询患者健康档案信息录</h1>
+
+    <div style="width: 500px;margin: 0 auto; text-align: center;">
+        请输入患者姓名：<input type="text" id="q" style="height: 28px;"><input type="button" id="qBtn" value="搜索">
+        <p id="qLabel" style="color: red;font-size: 20px;"></p>
+    </div>
+
     <table>
         <thead>
             <tr>
@@ -74,37 +77,16 @@
         </thead>
         <tbody id="queryData"></tbody>
     </table>
-
-    <h1>本地数据</h1>
-    <table>
-        <tr>
-            <th>id</th>
-            <th>病人姓名</th>
-            <th>诊断信息</th>
-            <th>时间</th>
-            <th>来源</th>
-            <th>操作</th>
-        </tr>
-        <c:forEach var="medicalRecord" items="${requestScope.list}">
-            <tr>
-                <td>${medicalRecord.id}</td>
-                <td>${medicalRecord.user.name}</td>
-                <td>${medicalRecord.diagnoseInfo}</td>
-                <td><fmt:formatDate value="${medicalRecord.createTime}" pattern="yyyy-MM-dd HH:mm" /></td>
-                <td>${medicalRecord.source}</td>
-                <td>
-                    <a href="/hospital/recordDetail?recordId=${medicalRecord.id}">查看</a>
-                    <!--<a href="javascript:;" class="shareBtn" data-id="${medicalRecord.id}">共享</a>-->
-                </td>
-            </tr>
-        </c:forEach>
-    </table>
 </div>
 <script src="/js/jquery-2.2.3.min.js"></script>
 <script>
     $(function() {
-        var loginUserId = '${sessionScope.userInfo.id}';
         var loginName = '${sessionScope.userInfo.cusName}';
+
+        $('#linkBtn').click(function() {
+            location.href = '/hospital/localdata';
+        });
+
         $('#qBtn').click(function() {
             var q = $('#q').val();
             if (q == '') {
@@ -155,6 +137,7 @@
 
                         }
                         $('#queryData').html(html);
+                        $('#qLabel').html(q + "的历史数据");
                     } else {
                         $('#queryData').html(data.message);
                     }

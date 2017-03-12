@@ -68,7 +68,7 @@
         <select id="hospital">
             <option value="bjdxgjyy">北京大学国际医院</option>
             <option value="fddxfshsyy">复旦大学附属华山医院</option>
-            <option value="bjdxszyy">北京大学深圳医院</option>
+            <option value="bjdxszyy">深圳市人民医院</option>
         </select>
     </div>
     <table>

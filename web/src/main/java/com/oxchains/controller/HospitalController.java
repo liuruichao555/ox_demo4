@@ -49,14 +49,37 @@ public class HospitalController extends BaseController {
             return "redirect:/";
         }
 
-        List<MedicalRecord> list = hospitalService.getRecords(customer.getCusName());
-        request.setAttribute("list", list);
         request.setAttribute("balance", customerService.getBalance(customer.getCusName()));
         return "hospital/home";
     }
 
+    @RequestMapping("/localdata")
+    public String home2(HttpServletRequest request) {
+        HttpSession session = request.getSession();
+        Customer customer = (Customer) session.getAttribute(LOGIN_USER_SESSION_KEY);
+        if (customer == null) {
+            return "redirect:/";
+        }
+
+        List<MedicalRecord> list = hospitalService.getRecords(customer.getCusName());
+        request.setAttribute("list", list);
+        request.setAttribute("balance", customerService.getBalance(customer.getCusName()));
+        // 已获得的共享数据
+        request.setAttribute("shareList", hospitalService.getShareRecords(customer.getCusName(), list));
+        return "hospital/home2";
+    }
+
     @RequestMapping("/recordDetail")
-    public String recordDetail(@RequestParam String recordId, HttpServletRequest request) {
+    public String recordDetail(@RequestParam String query, HttpServletRequest request) {
+        MedicalRecord medicalRecord = medicalRecordMapper.execSql(query);
+        medicalRecord.setUser(userMapper.findById(medicalRecord.getUserId()));
+        request.setAttribute("detail", medicalRecord);
+        return "hospital/detail";
+    }
+
+
+    @RequestMapping("/recordDetail2")
+    public String recordDetail2(@RequestParam String recordId, HttpServletRequest request) {
 
         String query = "select * from medical_record where id = " + recordId;
 

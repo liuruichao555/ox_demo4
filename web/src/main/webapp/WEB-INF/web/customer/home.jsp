@@ -54,9 +54,9 @@
     </style>
 </head>
 <body>
-<div style="width: 500px; height: 200px;text-align: center;margin: 0 auto;">
-    <span style="font-size: 40px;">${sessionScope.userInfo.realName}</span>
-    <span>积分：${requestScope.balance}</span>
+<div style="width: 500px; text-align: center;margin: 0 auto;">
+    <div style="font-size: 40px;margin: 10px;">${sessionScope.userInfo.realName}</div>
+    <div>积分：${requestScope.balance}</div>
 </div>
 <div>
     <h2><a href="javascript:void(0);" onclick="window.open('https://ox-invoice-web-unblocked-omega.mybluemix.net/invoice/list')" target="_blank"> 报销管理</a></h2>
@@ -66,7 +66,8 @@
             <th>id</th>
             <th>描述</th>
             <th>日期</th>
-            <th>操作</th>
+            <th>共享</th>
+            <th>定价</th>
         </tr>
         <c:forEach var="medicalRecord" items="${requestScope.list}">
             <tr>
@@ -75,11 +76,13 @@
                 <td><fmt:formatDate value="${medicalRecord.createTime}" pattern="yyyy-MM-dd" /></td>
                 <td>
                     <a href="javascript:;" class="shareBtn" data-id="${medicalRecord.id}">共享</a>
+                </td>
+                <td>
                     <c:if test="${medicalRecord.price == null}">
                         <a href="javascript:;" class="fixPriceBtn" data-id="${medicalRecord.id}">定价</a>
                     </c:if>
                     <c:if test="${medicalRecord.price != null}">
-                        已定价：${medicalRecord.price}元
+                        已定价：${medicalRecord.price} 积分
                     </c:if>
                 </td>
             </tr>

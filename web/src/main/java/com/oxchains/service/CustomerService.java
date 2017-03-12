@@ -163,7 +163,7 @@ public class CustomerService extends BaseService {
 
         message.setFromUserId(Integer.valueOf(userId));
         message.setToUserId(owner.getId());
-        message.setContent(customer.getRealName() + " 想要访问您《" + medicalRecord.getDiagnoseInfo() + "》的病历，是否同意？");
+        message.setContent(customer.getRealName() + " 想要访问您“" + medicalRecord.getDiagnoseInfo() + "”》的病历，是否同意？");
         message.setStatus(0);
         message.setRemark(recordId);
         message.setCreateTime(new Date());

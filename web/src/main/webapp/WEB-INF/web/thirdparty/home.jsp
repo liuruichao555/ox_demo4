@@ -15,6 +15,11 @@
             height: 100px;
             line-height: 100px;
         }
+        h3{
+            text-align: center;
+            height: 100px;
+            line-height: 100px;
+        }
         table{
             margin:0 auto;
             width: 700px;
@@ -39,29 +44,36 @@
             background-color: #f9f9f9;
         }
         button{
-            width: 100px;
+            width: 200px;
             height: 35px;
             font-size: 15px;
             color: #252528;
             background: #6ea1ff;
             border-radius: 5px;
             border:#6ea1ff;
-            margin-left:80%;
+            cursor: pointer;
+            margin: 0 auto;
         }
     </style>
 </head>
 <body>
 <div id="hospital">
-    <div style="width: 500px; height: 200px;text-align: center;margin: 0 auto;">
-        <span style="font-size: 40px;">${sessionScope.userInfo.realName}</span>
-        <span>积分：${requestScope.balance}</span>
-    </div>
-    <!--<button type="button">共享病例</button>-->
-    <div style="width: 300px;margin: 0 auto;">
-        <input type="text" id="q"><input type="button" id="qBtn" value="搜索">
+    <div style="width: 500px; text-align: center;margin: 0 auto;">
+        <div style="font-size: 40px;margin: 10px;">${sessionScope.userInfo.realName}</div>
+        <div style="margin: 10px;">积分：${requestScope.balance}</div>
+        <button type="button" id="linkBtn">已购买数据</button>
     </div>
 
+
+
     <h1>查询疾病数据</h1>
+
+    <div style="width: 500px;margin: 0 auto;">
+        查询疾病名称：<input style="height: 28px;" type="text" id="q"><input type="button" id="qBtn" value="搜索">
+    </div>
+
+    <h3>查询结果</h3>
+
     <table>
         <thead>
             <tr>
@@ -75,36 +87,14 @@
         </thead>
         <tbody id="queryData"></tbody>
     </table>
-
-    <h1>本地数据</h1>
-    <table>
-        <tr>
-            <th>id</th>
-            <th>医院名</th>
-            <th>时间</th>
-            <th>诊断信息</th>
-            <th>价格</th>
-            <th>操作</th>
-        </tr>
-        <c:forEach var="medicalRecord" items="${requestScope.list}">
-            <tr>
-                <td>${medicalRecord.id}</td>
-                <td>${medicalRecord.user.name}</td>
-                <td>${medicalRecord.diagnoseInfo}</td>
-                <td><fmt:formatDate value="${medicalRecord.createTime}" pattern="yyyy-MM-dd HH:mm" /></td>
-                <td>${medicalRecord.source}</td>
-                <td>
-                    <a target="_blank" href="/hospital/recordDetail?query=${medicalRecord.query}">查看</a>
-                </td>
-            </tr>
-        </c:forEach>
-    </table>
 </div>
 <script src="/js/jquery-2.2.3.min.js"></script>
 <script>
     $(function() {
-        var loginUserId = '${sessionScope.userInfo.id}';
-        var loginName = '${sessionScope.userInfo.cusName}';
+        $('#linkBtn').click(function() {
+            location.href = '/thirdparty/localdata';
+        });
+
         $('#qBtn').click(function() {
             var q = $('#q').val();
             if (q == '') {
@@ -112,8 +102,9 @@
                 return;
             }
             $.ajax({
-                url: '/thirdparty/search?name=' + q,
-                data: null,
+                type: 'POST',
+                url: '/thirdparty/search',
+                data: {'name': q},
                 dataType: 'json',
                 success: function(data) {
                     if (data.status == 1) {
@@ -131,7 +122,7 @@
                             if (obj.havePermission == 'True') {
                                 html = html + '<td><a target="_blank" href="/hospital/recordDetail?query=' + obj.query + '">查看</a></td>';
                             } else {
-                                html = html + '<td><a class="payForRecord" href="javascript:;" data-id="' + obj.medicalRecord.id + '">购买</td>';
+                                html = html + '<td><a class="payForRecord" href="javascript:;" data-price="' + obj.medicalRecord.price + '" data-id="' + obj.medicalRecord.id + '">购买</td>';
                             }
 
                             html = html + '</tr>';
@@ -146,20 +137,23 @@
 
         $('body').delegate('.payForRecord', 'click', function() {
             var item = $(this);
-            var recordId = item.attr('data-id');
-            $.ajax({
-                type: 'POST',
-                url: '/thirdparty/payRecord',
-                data: {'recordId': recordId},
-                dataType: 'json',
-                success: function(data) {
-                    if (data.status == 1) {
-                        alert('操作成功！' + data.message);
-                    } else {
-                        alert(data.message);
+            var price = item.attr('data-price');
+            if (window.confirm("价格" + price + ", 是否购买？")) {
+                var recordId = item.attr('data-id');
+                $.ajax({
+                    type: 'POST',
+                    url: '/thirdparty/payRecord',
+                    data: {'recordId': recordId},
+                    dataType: 'json',
+                    success: function (data) {
+                        if (data.status == 1) {
+                            alert('操作成功！' + data.message);
+                        } else {
+                            alert(data.message);
+                        }
                     }
-                }
-            });
+                });
+            }
         });
 
         Date.prototype.format =function(format)
