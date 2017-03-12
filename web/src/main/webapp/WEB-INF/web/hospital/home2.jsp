@@ -48,6 +48,10 @@
             border:#6ea1ff;
             cursor: pointer;
         }
+        .current {
+            background-color: #B5B5B5;
+            color: white;
+        }
     </style>
 </head>
 <body>
@@ -55,9 +59,17 @@
     <div style="width: 500px; text-align: center;margin: 0 auto;">
         <div style="font-size: 40px;margin: 10px;">${sessionScope.userInfo.realName}</div>
         <div style="margin: 10px;">积分：${requestScope.balance}</div>
-        <button type="button" id="linkBtn">查询患者健康档案信息录</button>
+        <button type="button" id="linkBtn">查询患者健康档案信息</button>
+        <p></p>
+        <button type="button" id="bingliBtn">病历</button>
+        <button type="button" class="current" id="invoiceBtn">票据列表</button>
     </div>
 
+    <div id="invoiceInfo" style="text-align: center; margin: 10px;padding: 10px;display: none;">
+        <iframe style="margin: 0 auto;" width="500px" height="300px" src="https://ox-invoice-web-unblocked-omega.mybluemix.net/reimburse/list#1" frameborder="no" border="0" marginwidth="0" marginheight="0"></iframe>
+    </div>
+
+    <div id="localInfo">
     <h1>本院健康档案信息</h1>
     <table>
         <tr>
@@ -105,12 +117,25 @@
             </tr>
         </c:forEach>
     </table>
+    </div>
 </div>
 <script src="/js/jquery-2.2.3.min.js"></script>
 <script>
     $(function() {
         $('#linkBtn').click(function() {
             location.href = '/hospital';
+        });
+        $('#bingliBtn').click(function() {
+            $('#localInfo').show();
+            $('#invoiceInfo').hide();
+            $('#bingliBtn').removeClass('current');
+            $('#invoiceBtn').addClass('current');
+        });
+        $('#invoiceBtn').click(function() {
+            $('#localInfo').hide();
+            $('#invoiceInfo').show();
+            $('#bingliBtn').addClass('current');
+            $('#invoiceBtn').removeClass('current');
         });
     });
 </script>

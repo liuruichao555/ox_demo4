@@ -59,7 +59,7 @@
     <div>积分：${requestScope.balance}</div>
 </div>
 <div>
-    <h2><a href="javascript:void(0);" onclick="window.open('https://ox-invoice-web-unblocked-omega.mybluemix.net/invoice/list')" target="_blank"> 报销管理</a></h2>
+    <h2><a href="https://ox-invoice-web-unblocked-omega.mybluemix.net/invoice/list" target="_blank"> 报销管理</a></h2>
     <h2>病历列表 </h2>
     <table>
         <tr>
