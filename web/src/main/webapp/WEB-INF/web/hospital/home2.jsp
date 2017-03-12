@@ -66,7 +66,7 @@
     </div>
 
     <div id="invoiceInfo" style="text-align: center; margin: 10px;padding: 10px;display: none;">
-        <iframe style="margin: 0 auto;" width="500px" height="300px" src="https://ox-invoice-web-unblocked-omega.mybluemix.net/reimburse/list#1" frameborder="no" border="0" marginwidth="0" marginheight="0"></iframe>
+        <iframe id="myIframe" style="margin: 0 auto;" width="700px" height="700px" src="https://ox-invoice-web-unblocked-omega.mybluemix.net/reimburse/list#1" frameborder="no" border="0" marginwidth="0" marginheight="0"></iframe>
     </div>
 
     <div id="localInfo">
@@ -136,6 +136,7 @@
             $('#invoiceInfo').show();
             $('#bingliBtn').addClass('current');
             $('#invoiceBtn').removeClass('current');
+            $('#myIframe').attr('src', 'https://ox-invoice-web-unblocked-omega.mybluemix.net/reimburse/list#1');
         });
     });
 </script>
