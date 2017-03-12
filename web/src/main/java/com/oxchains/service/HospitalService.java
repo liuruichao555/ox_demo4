@@ -121,9 +121,9 @@ public class HospitalService extends BaseService {
                 }
             }
             return result;
-        } catch (IOException e) {
+        } catch (Exception e) {
             log.error("search error!", e);
         }
-        return null;
+        return result;
     }
 }
